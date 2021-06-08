@@ -18,5 +18,12 @@ df['Item'] = df['Item'].str.strip()
 
 print(df)
 
+df2 = [df['Item'], df['mean']]
+headers = ['Item', 'footprint']
+df2 = pd.concat(df2, axis=1, keys=headers)
+
+print(df2)
+
 # write to csv
 df.to_csv('co2_data.csv')
+df2.to_csv('co2_data_simple.csv')

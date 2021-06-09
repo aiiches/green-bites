@@ -26,4 +26,4 @@ print(df2)
 
 # write to csv
 df.to_csv('co2_data.csv')
-df2.to_csv('co2_data_simple.csv')
+df2.to_csv('co2_data_simple.csv', index=False)

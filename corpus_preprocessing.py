@@ -58,8 +58,36 @@ co2_percent = int((len(co2_difference) / len(co2_words)) * 100)
 nutrients_difference = nutrient_words.difference(recipe_words)
 nutrients_percent = int((len(nutrients_difference) / len(nutrient_words)) * 100)
 
-print(f'Excluded co2 words: {co2_difference}')
-print(f'{len(co2_difference)} words from the co2 dataset (about {co2_percent}%) are not included in the recipes')
+# print(f'Excluded co2 words: {co2_difference}')
+# print(f'{len(co2_difference)} words from the co2 dataset (about {co2_percent}%) are not included in the recipes')
+#
+# print(f'Excluded nutrient words: {nutrients_difference}')
+# print(f'{len(nutrients_difference)} words from the nutrient dataset (about {nutrients_percent}%) are not included in the recipes')
 
-print(f'Excluded nutrient words: {nutrients_difference}')
-print(f'{len(nutrients_difference)} words from the nutrient dataset (about {nutrients_percent}%) are not included in the recipes')
+# Filter co2 data
+rows_to_drop = []
+for i, name in enumerate(co2_df['Item'].to_list()):
+    for word in co2_difference:
+        if name.find(word) != -1:  # name contains a word from co2_difference
+            rows_to_drop.append(i)
+            break
+co2_df = co2_df.drop(rows_to_drop)
+co2_df.to_csv('co2_data_filtered.csv', index=False)
+
+# filter nutrient data
+rows_to_drop = []
+nutrient_df.insert(0, 'FullName', nutrient_df['Type'] + nutrient_df['Name'])
+nutrient_df['FullName'] = nutrient_df['FullName'].str.lower()
+for i, name in enumerate(nutrient_df['FullName'].to_list()):
+    for word in nutrients_difference:
+        if name.find(word) != -1:  # name contains a word from co2_difference
+            rows_to_drop.append(i)
+            break
+
+print(nutrient_df)
+nutrient_df = nutrient_df.drop(rows_to_drop)
+nutrient_df = nutrient_df.drop(['Unnamed: 0', 'FoodGroup', 'Type', 'Name'], axis=1)
+nutrient_df['FullName'] = nutrient_df['FullName'].str.replace('(', '')
+nutrient_df['FullName'] = nutrient_df['FullName'].str.replace(')', '')
+nutrient_df['FullName'] = nutrient_df['FullName'].str.strip()
+nutrient_df.to_csv('nutrient_data_filtered.csv', index=False)

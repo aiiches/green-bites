@@ -15,6 +15,7 @@ df['Item'] = df['Item'].str.replace(r'\*', '')
 df['Item'] = df['Item'].str.replace(r'\(F\)', 'FROZEN')
 df['Item'] = df['Item'].str.replace(r'\(.\)', '')
 df['Item'] = df['Item'].str.strip()
+df['Item'] = df['Item'].str.lower()
 
 # create simplified dataframe
 df2 = [df['Item'], df['mean']]

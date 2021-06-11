@@ -72,7 +72,7 @@ cakes and croissant,2.230607143
 cocoa cakes and croissant,1.970555556
 tomato chopped,1.410825
 tomato puree,1.169911429
-tomato & basil,1.1465
+tomato and basil,1.1465
 carrots canned,1.6
 corn canned,1.355
 carrots frozen,0.267
@@ -95,13 +95,14 @@ beef meat with bone,19.54409099
 buffalo bone free meat,71.39276803
 butter,9.900066667
 cream,5.342395344
+mascarpone,5.7
 mozzarella,8.475714286
 ricotta,3.4
 asiago,10.24
 camembert,7.55
 ceddar,11.8655
 cheese,9.288191958
-cheese semi-hard,8.647
+cheese semi hard,8.647
 emmental,8.2
 goat cheese,8.18
 grana padano,14.27333333
@@ -238,6 +239,7 @@ tomato,0.484513725
 vegetables,0.6926075
 zucchini,0.6516393443
 anchovy,0.8144166667
+carp,1.804666667
 catfish,8.93
 cod,3.289318182
 diamond fish,7.560333333
@@ -251,7 +253,7 @@ plaice,6.13
 pollock,1.4
 rock fish,6.94
 salmon,3.799502405
-sea-bass,3.59096
+sea bass,3.59096
 shark,10.09044444
 sole,5.4
 swordfish,12.838

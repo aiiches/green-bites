@@ -42,7 +42,8 @@ print(f'Excluded co2 words: {co2_difference}')
 print(f'{len(co2_difference)} words from the co2 dataset (about {co2_percent}%) are not included in the recipes')
 
 print(f'Excluded nutrient words: {nutrients_difference}')
-print(f'{len(nutrients_difference)} words from the nutrient dataset (about {nutrients_percent}%) are not included in the recipes')
+print(f'{len(nutrients_difference)} words from the nutrient dataset (about {nutrients_percent}%) '
+      f'are not included in the recipes')
 
 # Filter co2 data
 rows_to_drop = []

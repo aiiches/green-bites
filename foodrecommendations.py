@@ -10,12 +10,11 @@ from consolemenu import *
 from consolemenu.items import *
 
 #for plotting
-#import matplotlib.pyplot as plt
-#import plotly.express as px
-#import seaborn as sns
+import matplotlib.pyplot as plt
+import plotly.express as px
+import seaborn as sns
 
 # for 3D projection
-from sklearn.preprocessing import StandardScaler
 from mpl_toolkits.mplot3d import Axes3D
 
 #for clustering
@@ -27,7 +26,7 @@ from sklearn.neighbors import NearestNeighbors
 
 
 #reading data from csv file using pandas
-df=pd.read_csv('co2_data.csv')
+df=pd.read_csv('co2_data_lk.csv')
 
 """Examining and Learning about the features of the dataframe"""
 
@@ -81,7 +80,7 @@ df[df_num_1.columns] = df_num_1
 df.head()
 
 """#Data visualization"""
-"""
+
 #displaying data frame in Axes
 fig, ax = plt.subplots(figsize = (15, 10))
 sns.heatmap(df.corr(), annot = True, 
@@ -103,7 +102,7 @@ for dato in data:
     fig = px.scatter(df, x = 'Footprint', y = dato,
                     size = dato, color = 'Item')
     fig.show()
-"""
+
 
 """K-Mean Clustering"""
 
@@ -157,25 +156,24 @@ for i in range(1,20):
 #the plot looks like an Elbow. 
 #As the number of clusters increases, the WCSS value will start to decrease
 #The point at which the elbow shape is created is 4, that is, our K value or an optimal number of clusters is 4.
-"""
+
 plt.plot(range(1,20),wcss, linewidth = 2, markersize = 12, marker='o')
 plt.title('The Elbow Curve')
 plt.xlabel('Number of Clusters')
 plt.ylabel('Sum of Squares Within Cluster ')
 plt.savefig('elbow.png')
 plt.show()
-"""
+
 
 """K-means Clustering - 2. KMeansConstrained with min max cluster size"""
 kmeans = KMeansConstrained(n_clusters=36, size_min=5, size_max=8, init='k-means++', n_init=10, max_iter=50, verbose=False, tol=1e-4, random_state=42)
 kmeans.fit_predict(X1)
 
-
 #Printing centroids
 centroids = kmeans.cluster_centers_
 print(centroids)
 
-"""
+
 #Visualizing Clusters
 labels = kmeans.predict(X1)
 C = kmeans.cluster_centers_
@@ -212,7 +210,7 @@ amount = pd.DataFrame()
 amount['color'] = colors
 amount['amount'] = copy.groupby('label').size()
 amount
-"""
+
 
 """compiling data frame with new values"""
 

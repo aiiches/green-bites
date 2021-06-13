@@ -106,26 +106,6 @@ for dato in data:
 
 """K-Mean Clustering"""
 
-#droping features we do not want to cluster based on
-# X1 has the clustering features (Energy_kcal, Protein_g, Fat_g, Carb_g, Sugar_g, Fiber_g, Calcium_mg, Iron_mg, Magnesium_mg, VitC_mg)
-
-X1 = df.drop(['Item', 'Footprint', 'VitA_mcg', 'VitB6_mg', 'VitB12_mcg','VitE_mg', 'Folate_mcg', 'Niacin_mg', 'Riboflavin_mg', 'Thiamin_mg', 'Copper_mcg', 'Manganese_mg', 'Phosphorus_mg'], axis = 1)
-
-
-#for i in range(1,40):
-kmeans = KMeansConstrained(n_clusters=40, size_min=4, size_max=8, init='k-means++', n_init=10, max_iter=50, verbose=False, tol=1e-4, random_state=42)
-kmeans.fit_predict(X1)
-
-#compiling data frame with new values
-X1['Cluster_ID'] = pd.DataFrame(kmeans.labels_)
-#assign values back to the original df
-df[X1.columns] = X1
-#saving df to csv
-df.to_csv('cluster_food.csv')
-
-#to show number of items in each cluster
-df['Cluster_ID'].value_counts()
-
 """K-means Clustering - 1. Elbow method to find optimal K number of clsters"""
 
 """
@@ -166,8 +146,21 @@ plt.show()
 
 
 """K-means Clustering - 2. KMeansConstrained with min max cluster size"""
-kmeans = KMeansConstrained(n_clusters=36, size_min=5, size_max=8, init='k-means++', n_init=10, max_iter=50, verbose=False, tol=1e-4, random_state=42)
-kmeans.fit_predict(X1)
+
+#to run KMeansConstrained clustering 3 times
+for i in range(1,3):
+    kmeans = KMeansConstrained(n_clusters=40, size_min=4, size_max=8, init='k-means++', n_init=10, max_iter=50, verbose=False, tol=1e-4, random_state=42)
+    kmeans.fit_predict(X1)
+
+#compiling data frame with new values
+X1['Cluster_ID'] = pd.DataFrame(kmeans.labels_)
+#assign values back to the original df
+df[X1.columns] = X1
+#saving df to csv
+df.to_csv('cluster_food.csv')
+
+#to show number of items in each cluster
+df['Cluster_ID'].value_counts()
 
 #Printing centroids
 centroids = kmeans.cluster_centers_

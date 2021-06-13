@@ -149,7 +149,7 @@ plt.show()
 
 #to run KMeansConstrained clustering 3 times
 for i in range(1,3):
-    kmeans = KMeansConstrained(n_clusters=40, size_min=4, size_max=8, init='k-means++', n_init=10, max_iter=50, verbose=False, tol=1e-4, random_state=42)
+    kmeans = KMeansConstrained(n_clusters=36, size_min=5, size_max=8, init='k-means++', n_init=10, max_iter=50, verbose=False, tol=1e-4, random_state=42)
     kmeans.fit_predict(X1)
 
 #compiling data frame with new values

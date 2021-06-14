@@ -225,20 +225,22 @@ df['Cluster_ID'].value_counts()
 food_choice = input("Enter a Food Item: ")
 
 def recomandation(food_choice):
-  food_choice = food_choice.lower()
-  df_user_choice = df.loc[df['Item'] == food_choice]
-  user_choice_carbon_footprint = float(df_user_choice['Footprint'])
-  df_same_cluster = df.loc[df['Cluster_ID'] == int(df_user_choice['Cluster_ID'])]
-  df_lower_CFP = df_same_cluster.loc[df_same_cluster['Footprint'] < user_choice_carbon_footprint]
-  if len(df_lower_CFP) == 0:
-    print('Great choice!')
-  else:
-    print('\n')
-    print(food_choice + ': has a carbon footprint of {} GHG'.format('%.2f'%user_choice_carbon_footprint))
-    print('\n')
-    print('Here is a list of items with lower carbon footprint:')
-    print('\n')
-    print(df_lower_CFP.sort_values(["Footprint"], ascending=True))
+  try:
+    food_choice = food_choice.lower()
+    df_user_choice = df.loc[df['Item'] == food_choice]
+    user_choice_carbon_footprint = float(df_user_choice['Footprint'])
+    df_same_cluster = df.loc[df['Cluster_ID'] == int(df_user_choice['Cluster_ID'])]
+    df_lower_CFP = df_same_cluster.loc[df_same_cluster['Footprint'] < user_choice_carbon_footprint].sort_values(["Footprint"], ascending=True)
+    if len(df_lower_CFP) == 0:
+      print('Great choice!')
+    else:
+      print(food_choice + ': has a carbon footprint of {} GHG'.format('%.2f'%user_choice_carbon_footprint))
+      print('\n')
+      print('Here is a list of items with lower carbon footprint:')
+      print('\n')
+      print(df_lower_CFP[['Item', 'Footprint']][0:5])
+  except:
+    print('Sorry, we do not know this item. Try an other name')
 
 recomandation(food_choice)
 

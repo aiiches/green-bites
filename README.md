@@ -56,9 +56,12 @@ This would allow us to both improve the identification of user inputs and create
 in more specific recommendations.
 ### Clustering
 In order to provide helpful recommendations to the user, the food items were clustered based on their nutritional
-information. This way, recommended alternatives will provide the user with similar nutritional value. All items were 
-clustered using the [k-means++](https://www.geeksforgeeks.org/ml-k-means-algorithm/) algorithm, which uses a smarter
-initialization of centroids than standard k-means clustering.
+information. This way, recommended alternatives will provide the user with similar nutritional value. To cluster all 
+of the items, the following machine learning techniques were used:
+
+1. Cluster Analysis: We used the Elbow Method as a heuristic to determine the number of clusters in our  dataset.
+2. Hyperparameter Optimization: The K-means++ algorithm was used to resolve the random assignment of centroids in each cluster.
+3. K-Means-Constrained Clustering: We used k-means-constrained clustering to set a maximum and minimum cluster sizes.
 
 ## Our vision
 The current iteration of *Green Bites* is simply a prototype, intended to demonstrate the utility and potential of 

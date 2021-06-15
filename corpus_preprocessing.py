@@ -63,4 +63,4 @@ for i, name in enumerate(nutrient_df['FullName'].to_list()):
             rows_to_drop.append(i)
             break
 nutrient_df = nutrient_df.drop(rows_to_drop)
-nutrient_df.to_csv('nutrient_data_filtered.csv', index=False)
+nutrient_df.to_csv('nutrition_data_filtered.csv', index=False)

@@ -52,3 +52,11 @@ for i, index in enumerate(max_2):
 df_merged = pd.concat([co2_df, df_tomerge], axis=1)
 df_merged = df_merged.drop(['WordEmbedding'], axis=1)
 df_merged.to_csv('merged_dataset.csv', index=False)
+
+df_tomerge2 = pd.DataFrame(columns=(co2_df.columns))
+for i, index in enumerate(max_1):
+    df_tomerge2.loc[i] = co2_df.loc[index]
+
+df_merged = pd.concat([nutrient_df, df_tomerge2], axis=1)
+df_merged = df_merged.drop(['WordEmbedding'], axis=1)
+df_merged.to_csv('merged_dataset_large.csv', index=False)

@@ -21,7 +21,7 @@ for index, row in nutrient_df.iterrows():
         vector = wv[word]  # find the vector from the embeddings dataset
         vector_sum = np.add(vector_sum, vector)
     embeddings_list.append(vector_sum / (i + 1))
-nutrient_df.insert(1, 'WordEmbedding', embeddings_list)
+nutrient_df.insert(1, 'Word Embedding', embeddings_list)
 
 # For each name in the co2 dataset, get word embeddings for each word
 embeddings_list = []
@@ -38,7 +38,7 @@ co2_df.insert(1, 'WordEmbedding', embeddings_list)
 vector1 = co2_df['WordEmbedding'].tolist()
 vector1 = np.array(vector1)
 
-vector2 = nutrient_df['WordEmbedding'].tolist()
+vector2 = nutrient_df['Word Embedding'].tolist()
 vector2 = np.array(vector2)
 
 similarities = cosine_similarity(vector1, vector2)

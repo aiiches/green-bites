@@ -29,14 +29,16 @@ def recognize_item(item_name, known_embeddings):
     return max_index
 
 
+print("Welcome to Green Bites!")
 print("Enter 'Q' to exit")
-user_item = input("Enter your grocery item: ")
+user_item = input("Enter any grocery item: ")
 while user_item != "Q":
     try:
         index = recognize_item(user_item, known_embeddings)
         print(f"{user_item} is estimated to have a footprint of about {df.loc[index]['Footprint']} kg of CO2 per kg.")
     except:
         print("Sorry, we couldn't recognize that food item. Try another!")
-    user_item = input("Enter another item: ")
+    finally:
+        user_item = input("Enter another item: ")
 
 print("Happy shopping!")

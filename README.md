@@ -61,7 +61,7 @@ of the items, the following machine learning techniques were used:
 
 1. Cluster Analysis: We used the Elbow Method as a heuristic to determine the number of clusters in our  dataset.
 2. Hyperparameter Optimization: The K-means++ algorithm was used to resolve the random assignment of centroids in each cluster.
-3. K-Means-Constrained Clustering: We used k-means-constrained clustering to set a maximum and minimum cluster sizes.
+3. Constrained Clustering: We used k-means-constrained clustering to set a maximum and minimum cluster sizes.
 
 ## Our vision
 The current iteration of *Green Bites* is simply a prototype, intended to demonstrate the utility and potential of 

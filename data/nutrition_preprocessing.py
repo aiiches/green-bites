@@ -4,7 +4,7 @@ import os
 
 # load food footprints data from excel
 cwd = os.getcwd()
-data_path = os.path.join(cwd, 'data\\nutrition_data_raw.xlsx')
+data_path = os.path.join(cwd, 'nutrition\\nutrition_data_raw.xlsx')
 df = pd.read_excel(data_path)
 
 # Remove non descriptive categories
@@ -38,4 +38,4 @@ df = df.drop(['FoodGroup', 'Type', 'Name'], axis=1)
 df = df.groupby(['FullName'], as_index=False).mean()
 
 # write to csv
-df.to_csv('nutrition_data.csv', index=False)
+df.to_csv('nutrition\\nutrition_data.csv', index=False)

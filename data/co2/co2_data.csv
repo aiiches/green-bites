@@ -1,11 +1,9 @@
 Item,Footprint
 beer in can,0.68988
 beer in glass,1.033266667
-beer modular can,0.54414
 chocolate or cream filled cookies,1.691277778
 simple cookies,1.496333333
 mineral water,0.491
-bread multicereal,0.703
 bread plain,0.9712222222
 bread whole,0.7775
 bread frozen frozen,1.31
@@ -15,7 +13,6 @@ milk chocolate,3.6
 coffee ground,5.129285715
 coffee parchment,8.465
 coffee drip filtered,0.595
-coffee soluble powder,0.33
 espresso,0.55
 flavored crackers,1.005
 plain crackers,1.239375
@@ -37,7 +34,6 @@ strawberry juice,2.68
 orange juice,0.6237565317
 pear juice,0.49045
 buckwheat flour,1.96
-durum wheat,0.47606
 graham flour,0.47
 maize flour,1.31
 millet flour,1.37
@@ -66,7 +62,6 @@ peanut paste,1.84
 olive oil,3.837506911
 palm oil,2.3159
 peanut oil,2.8975
-rapeseed oil,2.403693333
 soybean oil,2.303482143
 sunflower oil,0.99412
 pasta,1.241734167
@@ -80,7 +75,6 @@ tomato chopped,1.410825
 tomato peeled,1.275166667
 tomato puree,1.169911429
 tomato and basil,1.1465
-tomato arrabbiata,1.25525
 carrots canned,1.6
 corn canned,1.355
 carrots frozen,0.267
@@ -90,7 +84,6 @@ almond milk,0.4179027998
 coconut milk,0.4126201796
 rice milk,0.7975333333
 soy milk,0.854880238
-quorne,2.5
 soy burger,1.48
 tofu,2.333
 soy yogurt,1.36
@@ -104,21 +97,16 @@ beef meat with bone,19.54409099
 buffalo bone free meat,71.39276803
 butter,9.900066667
 cream,5.342395344
-mascarpone,5.7
 mozzarella,8.475714286
 ricotta,3.4
-stracchino,4.92
 asiago,10.24
 camembert,7.55
-ceddar,11.8655
 cheese,9.288191958
 cheese semi hard,8.647
-emmental,8.2
 goat cheese,8.18
 grana padano,14.27333333
 parmigiano reggiano,14.07556667
 pecorino,18.85333333
-mealworms,2.84
 eggs,3.228266612
 honey,1.7425
 kangaroo meat,4.1
@@ -134,7 +122,6 @@ pork ham,7.9325
 pork sausages,17.94
 pork meat with bone,3.49622331
 chicken bone free meat,4.239098846
-emu bone free meat,1.5
 duck meat bone free,4.1
 turkey meat bone free,5.106728977
 chicken meat with bone,3.24822457
@@ -164,8 +151,6 @@ lemon,0.22
 lime,0.22
 mandarin,0.3951428571
 orange,0.3546129032
-pomelo,0.51
-tangerin,0.384545
 apple,0.3128958142
 apricot,0.3591428571
 avocado,0.5435
@@ -173,7 +158,6 @@ banana,0.3814222222
 carob,1.1035
 cherry,0.4874285714
 fig,0.3073333333
-grapes,0.391
 guava,0.279
 kiwi,0.6537333333
 mango,0.3253333333
@@ -203,7 +187,6 @@ sorghum,0.88
 wheat,0.6712295455
 bean,0.6742857143
 chickpea,0.6733333333
-cowpea,0.4775
 green bean fresh,0.7324271134
 lentil,1.03
 pea,0.58075
@@ -220,8 +203,6 @@ peanut,0.8853333333
 pistachio,1.6025
 walnut,1.748666667
 rice,2.53557214092141
-rape seed,1.054
-sesam seed,0.88
 sunflower seed,1.1595
 chili,0.8
 ginger,0.88
@@ -229,7 +210,6 @@ potato,0.24620977985999995
 starchy roots,0.29
 sweet potato,0.35
 cucumber,2.587644531
-gerkin,2.515
 lettuce,2.694285714
 pepper,4.6
 tomato,2.885058419
@@ -239,7 +219,6 @@ pepper,1.175
 tomato,0.9412380952
 zucchini,1.7714
 asparagus,0.9667195402
-cabagge,0.3030111111
 lettuce,0.3981359259
 spinach,0.4826666667
 beetroot,0.245
@@ -256,35 +235,24 @@ celery,0.32
 cucumber,0.3153541776
 eggplant,0.454584
 fennel,0.48
-gerkin,0.2285714286
 pepper,0.57904
 pumpkin,0.3846762295
 tomato,0.484513725
 vegetables,0.6926075
 zucchini,0.6516393443
-alfonsino,3.49
 anchovy,0.8144166667
-anglerfish,12.2922
-carp,1.804666667
 catfish,8.93
 cod,3.289318182
 diamond fish,7.560333333
 eel,3.88
 fish mixed,4.012083333
-flatfish,6.406
-flathead,2.453333333
 fork beard,8.0086
 haddock,3.246666667
 hake,10.11637778
 herring,2.210666667
 ling,6.4486
 mackerel,2.054663768
-megrim,14.1544
-plaice,6.13
 pollock,1.4
-pomfret,6.6286
-porbeagle,11.436
-rhombus,8.41
 rock fish,6.94
 salmon,3.799502405
 sardine,0.9028
@@ -294,8 +262,6 @@ sole,5.4
 swordfish,12.838
 trout,3.645946032
 tuna,4.676625
-turbot,14.5136
-whiting,2.6632
 cod frozen,3.088333333
 fish stick frozen,2.260802469
 haddock frozen,3.72
@@ -310,10 +276,7 @@ trout frozen,4.375
 tuna frozen,2.6625
 cod fish stick,2.14
 hake fish stick,2.14
-makerel fish stick,1.01654321
 tuna in can,2.0
-barnacle,4.320466667
-krill,5.54
 lobster,19.302
 mussels,0.9379428571
 cuttlefish,5.05

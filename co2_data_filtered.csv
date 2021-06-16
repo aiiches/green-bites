@@ -17,6 +17,7 @@ espresso,0.55
 flavored crackers,1.005
 plain crackers,1.239375
 wholegrain crackers,0.9891764706
+crispbread,1.3645
 ketchup,1.464
 mayonnaise,2.04
 tempeh,1.1
@@ -71,6 +72,7 @@ cane sugar,0.66633
 cakes and croissant,2.230607143
 cocoa cakes and croissant,1.970555556
 tomato chopped,1.410825
+tomato peeled,1.275166667
 tomato puree,1.169911429
 tomato and basil,1.1465
 carrots canned,1.6
@@ -95,21 +97,19 @@ beef meat with bone,19.54409099
 buffalo bone free meat,71.39276803
 butter,9.900066667
 cream,5.342395344
-mascarpone,5.7
 mozzarella,8.475714286
 ricotta,3.4
 asiago,10.24
 camembert,7.55
-ceddar,11.8655
 cheese,9.288191958
 cheese semi hard,8.647
-emmental,8.2
 goat cheese,8.18
 grana padano,14.27333333
 parmigiano reggiano,14.07556667
 pecorino,18.85333333
 eggs,3.228266612
 honey,1.7425
+kangaroo meat,4.1
 lamb bone free meat,27.20904498
 lamb meat with bone,18.00556969
 buffalo milk,3.751428571
@@ -167,12 +167,14 @@ pear,0.2861041667
 pineapple,0.3380233667
 plum,0.2706666667
 pomegranate,0.4486666667
+rockmelon,0.39
 watermelon,0.52
 olives,0.5864055556
 blackberry,0.421
 blueberry,0.638995
 cranberry,0.9
 currant,0.6385
+gooseberry,0.84
 raspberry,0.632
 strawberry,0.675212119
 barley,0.5329705882
@@ -239,27 +241,27 @@ tomato,0.484513725
 vegetables,0.6926075
 zucchini,0.6516393443
 anchovy,0.8144166667
-carp,1.804666667
 catfish,8.93
 cod,3.289318182
 diamond fish,7.560333333
+eel,3.88
 fish mixed,4.012083333
 fork beard,8.0086
 haddock,3.246666667
 hake,10.11637778
 herring,2.210666667
+ling,6.4486
 mackerel,2.054663768
-plaice,6.13
 pollock,1.4
 rock fish,6.94
 salmon,3.799502405
+sardine,0.9028
 sea bass,3.59096
 shark,10.09044444
 sole,5.4
 swordfish,12.838
 trout,3.645946032
 tuna,4.676625
-whiting,2.6632
 cod frozen,3.088333333
 fish stick frozen,2.260802469
 haddock frozen,3.72

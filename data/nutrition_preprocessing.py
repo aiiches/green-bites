@@ -1,12 +1,15 @@
-import numpy as np
+
 import pandas as pd
 import os
 from itertools import chain
+from gensim.models import Word2Vec
 
 # load food footprints data from excel
 cwd = os.getcwd()
-data_path = os.path.join(cwd, 'nutrition\\nutrition_data_raw.xlsx')
-df = pd.read_excel(data_path)
+parent = os.path.abspath(os.path.join(cwd, os.pardir))
+df = pd.read_excel(os.path.join(cwd, 'nutrition\\nutrition_data_raw.xlsx'))
+model_path = os.path.join(parent, 'saved_models\\word2vec.model')
+model = Word2Vec.load(model_path)
 
 # Remove non descriptive categories
 df['Descrip'] = df['Descrip'].str.replace('Alcoholic beverage,', '')
@@ -38,7 +41,10 @@ df['FullName'] = df['FullName'].str.strip()
 df = df.drop(['FoodGroup', 'Type', 'Name'], axis=1)
 df = df.groupby(['FullName'], as_index=False).mean()
 
-recipes_df = pd.read_csv(os.path.join(cwd, 'recipes\\embeddings.csv'), index_col=0)
+# recipes_df = pd.read_csv(os.path.join(cwd, 'recipes\\embeddings.csv'), index_col=0)
+# recipe_words = set(recipes_df.index.values)
+recipe_words = model.wv.key_to_index
+recipe_words = set(recipe_words.keys())
 
 # format nutrient word data (uses type and name)
 nutrient_words = df['FullName'].to_list()
@@ -46,8 +52,6 @@ for i, item in enumerate(nutrient_words):
     nutrient_words[i] = item.split()
 nutrient_words = list(chain.from_iterable(nutrient_words))
 nutrient_words = set(nutrient_words)
-
-recipe_words = set(recipes_df.index.values)
 
 nutrients_difference = nutrient_words.difference(recipe_words)
 nutrients_percent = int((len(nutrients_difference) / len(nutrient_words)) * 100)
@@ -57,10 +61,12 @@ print(f'{len(nutrients_difference)} words from the nutrient dataset (about {nutr
 
 rows_to_drop = []
 for i, name in enumerate(df['FullName'].to_list()):
-    for word in nutrients_difference:
-        if name.find(word) != -1:  # name contains a word from co2_difference
+    for word in name.split():
+        print(word)
+        if word in nutrients_difference:  # name contains a word that is not in the recipe dataset
             rows_to_drop.append(i)
             break
+print(len(rows_to_drop))
 df = df.drop(rows_to_drop)
 
 # write to csv

@@ -42,8 +42,8 @@ print(f'{len(co2_difference)} words from the co2 dataset (about {co2_percent}%) 
 # Filter co2 data
 rows_to_drop = []
 for i, name in enumerate(df2['Item'].to_list()):
-    for word in co2_difference:
-        if name.find(word) != -1:  # name contains a word from co2_difference
+    for word in name.split():
+        if word in co2_difference:  # name contains a word from co2_difference
             rows_to_drop.append(i)
             break
 df2 = df2.drop(rows_to_drop)

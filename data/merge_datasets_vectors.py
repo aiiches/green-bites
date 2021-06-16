@@ -7,8 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 # load datasets
 cwd = os.getcwd()
 parent = os.path.abspath(os.path.join(cwd, os.pardir))
-co2_df = pd.read_csv(os.path.join(cwd, 'co2\\co2_data_filtered.csv'))
-nutrient_df = pd.read_csv(os.path.join(cwd, 'nutrition\\nutrition_data_filtered.csv'))
+co2_df = pd.read_csv(os.path.join(cwd, 'co2\\co2_data.csv'))
+nutrient_df = pd.read_csv(os.path.join(cwd, 'nutrition\\nutrition_data.csv'))
 
 # load trained word2vec model
 model_path = os.path.join(parent, 'saved_models\\word2vec.wordvectors')

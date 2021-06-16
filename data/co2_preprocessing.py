@@ -4,7 +4,7 @@ import os
 
 # load food footprints data from excel
 cwd = os.getcwd()
-data_path = os.path.join(cwd, 'data\\co2_data_raw.xlsx')
+data_path = os.path.join(cwd, 'co2\\co2_data_raw.xlsx')
 df = pd.read_excel(data_path)
 
 # drop unwanted columns
@@ -26,4 +26,4 @@ headers = ['Item', 'Footprint']
 df2 = pd.concat(df2, axis=1, keys=headers)
 
 # write to csv
-df2.to_csv('co2_data.csv', index=False)
+df2.to_csv('co2\\co2_data.csv', index=False)

@@ -42,6 +42,9 @@ for row in df['path'].values:
     target = row.split('/')[2]
     train_y.append(target)
 
+x_train = torch.stack(train_x)
+y_train = train_y
+
 
 test_x = []
 test_y = []
@@ -53,6 +56,9 @@ for row in df2['path'].values:
     test_x.append(image)
     target = row.split('/')[2]
     test_y.append(target)
+
+x_test = torch.stack(test_x)
+y_test = torch.stack(test_y)
 
 
 # Let's define a network
@@ -66,18 +72,18 @@ class Net(nn.Module):
         self.net.add_module('cv1', nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, stride=1, padding=0, dilation=1))
         #activation map of size Bx32x346x346
         self.net.add_module('rl1', nn.ReLU())
-        #activation map of size Bx32x30x30
+        #activation map of size Bx32x346x346
         self.net.add_module('mp1', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
-        #activation map of size Bx32x15x15
+        #activation map of size Bx32x173x173
         self.net.add_module('cv2', nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=0, dilation=1))
-        #activation map of size Bx64x13x13
+        #activation map of size Bx64x171x171
         self.net.add_module('rl2', nn.ReLU())
-        #activation map of size Bx64x13x13
+        #activation map of size Bx64x171x171
         self.net.add_module('mp2', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
-        #input size Bx64x6x6
+        #input size Bx64x86x86
         self.net.add_module('dp1', nn.Dropout2d(p=0.25))
         self.net.add_module('fl1', nn.Flatten())
-        self.net.add_module('fc1', nn.Linear(in_features=2304, out_features=128))
+        self.net.add_module('fc1', nn.Linear(in_features=473344, out_features=128))
         self.net.add_module('rl3', nn.ReLU())
         self.net.add_module('dp2', nn.Dropout(p=0.5))
         self.net.add_module('fc2', nn.Linear(in_features=128, out_features=10))
@@ -192,9 +198,9 @@ def train(epoch):
     model.train()
     tr_loss = 0
     # getting the training set
-    x_train, y_train = torch.Tensor(train_x), torch.Tensor(train_y)
+    #x_train, y_train = torch.Tensor(train_x), torch.Tensor(train_y)
     # getting the validation set
-    x_test, y_test = torch.Tensor(test_x), torch.Tensor(test_y)
+    #x_test, y_test = torch.Tensor(test_x), torch.Tensor(test_y)
     print(x_train.size())
     print(y_train.size())
     # converting the data into GPU format

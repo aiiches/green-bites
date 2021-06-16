@@ -35,6 +35,7 @@ df['FullName'] = df['FullName'].str.strip()
 
 # Drop more unwanted columns
 df = df.drop(['FoodGroup', 'Type', 'Name'], axis=1)
+df = df.groupby(['FullName'], as_index=False).mean()
 
 # write to csv
 df.to_csv('nutrition_data.csv', index=False)

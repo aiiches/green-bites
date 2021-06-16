@@ -36,7 +36,8 @@ user_item = input("Enter any grocery item: ")
 while user_item != "Q":
     try:
         index = recognize_item(user_item, known_embeddings)
-        print(f"{user_item} is estimated to have a footprint of about {df.loc[index]['Footprint']} kg of CO2 per kg.")
+        print(f"{user_item} is like {df.loc[index]['Item']}, which is estimated to have a footprint of about "
+              f"{df.loc[index]['Footprint']} kg of CO2 per kg.")
     except:
         print("Sorry, we couldn't recognize that food item. Try another!")
     finally:

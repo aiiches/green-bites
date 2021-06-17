@@ -15,7 +15,7 @@ class GroceryStoreDataset(torch.utils.data.Dataset):
                  img_height: int,
                  img_width: int):
         super().__init__()
-        
+
         self.images_list = []
         self.labels_list = []
 

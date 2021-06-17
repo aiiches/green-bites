@@ -42,15 +42,7 @@ def validation(epoch):
         total_loss += loss_train
     return(total_loss)
     
-model = models.alexnet(pretrained = True)
 
-# Let's define an optimizer
-
-optimizer = optim.Adam(model.parameters(), lr=0.001)
-
-# Let's define a Loss function
-
-lossfun = nn.NLLLoss()  # Use nn.CrossEntropyLoss with softmax
 
 if __name__ == '__main__':
     cwd = os.getcwd()
@@ -63,6 +55,16 @@ if __name__ == '__main__':
     img_width = 348
     batch_size = 32
     num_workers = 4
+
+    model = models.alexnet(pretrained=True)
+
+    # Let's define an optimizer
+
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+    # Let's define a Loss function
+
+    lossfun = nn.NLLLoss()  # Use nn.CrossEntropyLoss with softmax
 
     dataloader = image_dataloader.GroceryStoreDataloader(images_root_path,
                                         train_csv_path,
@@ -80,15 +82,15 @@ if __name__ == '__main__':
 
 
 
-# defining the number of epochs
-n_epochs = 25
-# empty list to store training losses
-train_losses = []
-# empty list to store validation losses
-test_losses = []
-# training the model
-for epoch in range(n_epochs):
-    train(epoch)
-    print(validation(epoch))
+    # defining the number of epochs
+    n_epochs = 25
+    # empty list to store training losses
+    train_losses = []
+    # empty list to store validation losses
+    test_losses = []
+    # training the model
+    for epoch in range(n_epochs):
+        train(epoch)
+        print(validation(epoch))
 
 

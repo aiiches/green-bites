@@ -19,39 +19,10 @@ from PIL import Image
 import numpy as np
 from torch.autograd import Variable
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
+import image_dataloader
 
 
 device = torch.device('cpu') # cuda
-
-#TODO save/open without pickle
-#TODO dataloader
-
-
-label_encoder = LabelEncoder()
-
-def onehot(liststring):
-    values = np.array(liststring)
-    # integer encode
-    integer_encoded = label_encoder.fit_transform(values)
-    # binary encode
-    onehot_encoder = OneHotEncoder(sparse=False)
-    integer_encoded = integer_encoded.reshape(len(integer_encoded), 1)
-    encoded = onehot_encoder.fit_transform(integer_encoded)
-    return encoded
-
-
-train_x = torch.stack(train_x)
-#TODO torch.cat()
-train_x = torch.squeeze(train_x)
-
-train_y = onehot(train_y)
-print(train_y)
-inverted_train = label_encoder.inverse_transform([np.argmax(train_y[500, :])])
-print(inverted_train)
-
-test_x = torch.stack(test_x)
-test_x = torch.squeeze(test_x)
-test_y = onehot(test_y)
 
 
 # Let's define a network
@@ -97,7 +68,7 @@ class Net(nn.Module):
     def forward(self, x):
         return self.net(x)
     
-model = Net().to(device)
+model = models.alexnet(pretrained = True)
 
 # Let's define an optimizer
 
@@ -108,44 +79,60 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 lossfun = nn.NLLLoss()  # Use nn.CrossEntropyLoss with softmax
 
 
+cwd = os.getcwd()
+
+images_root_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
+train_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/train.txt')
+val_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/val.txt')
+test_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/test.txt')
+img_height = 348
+img_width = 348
+batch_size = 32
+num_workers = 4
+
+dataloader = GroceryStoreDataloader(images_root_path,
+                                    train_csv_path,
+                                    val_csv_path,
+                                    test_csv_path,
+                                    img_height,
+                                    img_width,
+                                    batch_size,
+                                    num_workers)
+
+dataloader.setup()
+
+train_dataloader = dataloader.train_dataloader()
+val_dataloader = dataloader.val_dataloader()
+
 # Let's train our model
 
 def train(epoch):
     model.train()
     tr_loss = 0
     # getting the training set
-    x_train, y_train = torch.Tensor(train_x), torch.Tensor(train_y)
-    # getting the validation set
-    x_test, y_test = torch.Tensor(test_x), torch.Tensor(test_y)
-    print(x_train.size())
-    print(y_train.size())
-    # converting the data into GPU format
-    if torch.cuda.is_available():
-        x_train = x_train.cuda()
-        y_train = y_train.cuda()
-        x_test = x_test.cuda()
-        y_test = y_test.cuda()
+    for batch in train_dataloader:
+        images, labels = batch
+        # clearing the Gradients of the model parameters
+        optimizer.zero_grad()
+        # prediction for training set
+        output_train = model(images)
+        # computing the training loss
+        loss_train = lossfun(output_train, labels)
+        train_losses.append(loss_train)
+        # computing the updated weights of all the model parameters
+        loss_train.backward()
+        optimizer.step()
+        tr_loss = loss_train.item()
 
-    # clearing the Gradients of the model parameters
-    optimizer.zero_grad()
-    
-    # prediction for training and validation set
-    output_train = model(x_train)
-    output_val = model(x_test)
 
-    # computing the training and validation loss
-    loss_train = lossfun(output_train, y_train)
-    loss_test = lossfun(output_val, y_test)
-    train_losses.append(loss_train)
-    test_losses.append(loss_test)
-
-    # computing the updated weights of all the model parameters
-    loss_train.backward()
-    optimizer.step()
-    tr_loss = loss_train.item()
-    if epoch%2 == 0:
-        # printing the validation loss
-        print('Epoch : ',epoch+1, '\t', 'loss :', loss_test)
+def validation(epoch):
+    total_loss = 0
+    for batch in val_dataloader:
+        images, labels = batch
+        output_val = model(images)
+        loss_train = lossfun(output_val, labels)
+        total_loss += loss_train
+    return(total_loss)
 
 
 # defining the number of epochs
@@ -157,6 +144,8 @@ test_losses = []
 # training the model
 for epoch in range(n_epochs):
     train(epoch)
+    print(validation(epoch))
+
 
 
 # If I want to go with a pretrained model

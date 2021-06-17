@@ -23,18 +23,9 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 device = torch.device('cpu') # cuda
 
-with open("train_x.txt", "rb") as fp:   # Unpickling
-    train_x = pickle.load(fp)
-
-with open("train_y.txt", "rb") as fp:   # Unpickling
-    train_y = pickle.load(fp)
-
-with open("test_x.txt", "rb") as fp:   # Unpickling
-    test_x = pickle.load(fp)
-
-with open("test_y.txt", "rb") as fp:   # Unpickling
-    test_y = pickle.load(fp)
 #TODO save/open without pickle
+#TODO dataloader
+
 
 label_encoder = LabelEncoder()
 
@@ -64,7 +55,7 @@ test_y = onehot(test_y)
 
 
 # Let's define a network
-
+# TODO pretrained model
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()

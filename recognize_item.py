@@ -20,6 +20,12 @@ wv = KeyedVectors.load(model_path, mmap='r')
 
 
 def recognize_item(item_name, emb=known_embeddings):
+    """
+          recognizes the user input and finds the closest match in the full dataset
+          :param emb: list of embeddings in the full dataset (implicit from outer scope)
+          :param item_name: item entered by the user (string)
+          :return: dataframe row containing the item that is the best match from the dataset
+    """
     embedding = np.zeros(100)
     for i, word in enumerate(item_name.split()):
         embedding = np.add(embedding, wv[word])

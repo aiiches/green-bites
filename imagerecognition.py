@@ -7,23 +7,30 @@ Original file is located at
     https://colab.research.google.com/drive/1dP2MaSyoYMCeKhvNfEk8_RTPTEl4xHVQ
 """
 
-
 import torch.nn as nn
 import torch.optim as optim
 from torchvision import transforms, models
 import image_dataloader
 import os
+import tqdm
+import torch
 
-def train(epoch):
+def train(epoch, device):
     model.train()
+
     tr_loss = 0
     # getting the training set
     for batch in train_dataloader:
         images, labels = batch
+        images = images.to(device)
+        labels = labels.to(device)
+
         # clearing the Gradients of the model parameters
         optimizer.zero_grad()
+
         # prediction for training set
         output_train = model(images)
+
         # computing the training loss
         loss_train = lossfun(output_train, labels)
         train_losses.append(loss_train)
@@ -33,10 +40,15 @@ def train(epoch):
         tr_loss = loss_train.item()
 
 
-def validation(epoch):
+def validation(epoch, device):
+    model.eval()
     total_loss = 0
+
     for batch in val_dataloader:
         images, labels = batch
+        images = images.to(device)
+        labels = labels.to(device)
+
         output_val = model(images)
         loss_train = lossfun(output_val, labels)
         total_loss += loss_train
@@ -45,6 +57,9 @@ def validation(epoch):
 
 
 if __name__ == '__main__':
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     cwd = os.getcwd()
 
     images_root_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
@@ -55,17 +70,21 @@ if __name__ == '__main__':
     img_width = 348
     batch_size = 32
     num_workers = 4
+    num_classes = 43
 
+    print("Initializing model")
     model = models.alexnet(pretrained=True)
+    model.classifier[6] = nn.Linear(4096, num_classes)
+    model = model.to(device)
 
     # Let's define an optimizer
-
+    print("Initializing optimizer")
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     # Let's define a Loss function
+    lossfun = nn.CrossEntropyLoss()  # Use nn.CrossEntropyLoss with softmax
 
-    lossfun = nn.NLLLoss()  # Use nn.CrossEntropyLoss with softmax
-
+    print("Initializing dataloader")
     dataloader = image_dataloader.GroceryStoreDataloader(images_root_path,
                                         train_csv_path,
                                         val_csv_path,
@@ -80,17 +99,22 @@ if __name__ == '__main__':
     train_dataloader = dataloader.train_dataloader()
     val_dataloader = dataloader.val_dataloader()
 
-
-
     # defining the number of epochs
-    n_epochs = 25
+    n_epochs = 10
     # empty list to store training losses
     train_losses = []
     # empty list to store validation losses
     test_losses = []
     # training the model
-    for epoch in range(n_epochs):
-        train(epoch)
-        print(validation(epoch))
+
+    print("Training model")
+
+    for epoch in tqdm.trange(n_epochs):
+        print(f"Training epoch {epoch}")
+
+        train(epoch, device)
+        print(f"Validation loss: {validation(epoch, device)}")
+
+    print("Done!")
 
 

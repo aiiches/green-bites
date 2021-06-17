@@ -1,13 +1,14 @@
 import pandas as pd
-df =pd.read_csv('data\\cluster_food.csv')
+df = pd.read_csv('data\\cluster_food.csv')
 
-def recomandation(food_choice):
+
+def recommendation(food_choice):
     """
-          recomandation takes the user's input and matches it with the
+          recommendation takes the user's input and matches it with the
           clustered data in cluster_food.csv to compare the footprint values and
           sort them in ascending order
           :param user's choice
-          :return: list of recommandations
+          :return: list of recommendations
     """
     try:
         food_choice = food_choice.lower()
@@ -19,10 +20,10 @@ def recomandation(food_choice):
         if len(df_lower_CFP) == 0:
             print('Great choice!')
         else:
-            print(food_choice + ': has a carbon footprint of {} GHG'.format('%.2f' % user_choice_carbon_footprint))
-            print('\n')
+            print(food_choice + ': has a carbon footprint of {} kg of CO2 per kg'.format('%.2f' % user_choice_carbon_footprint))
+            # print('\n')
             print('Here is a list of items with lower carbon footprint:')
-            print('\n')
+            # print('\n')
             print(df_lower_CFP[['FullName', 'Footprint', 'Cluster_ID']][0:10])
     except:
         print('Sorry, we do not know this item. Try an other name')

@@ -62,7 +62,6 @@ print(f'{len(nutrients_difference)} words from the nutrient dataset (about {nutr
 rows_to_drop = []
 for i, name in enumerate(df['FullName'].to_list()):
     for word in name.split():
-        print(word)
         if word in nutrients_difference:  # name contains a word that is not in the recipe dataset
             rows_to_drop.append(i)
             break

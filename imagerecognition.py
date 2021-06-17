@@ -7,104 +7,12 @@ Original file is located at
     https://colab.research.google.com/drive/1dP2MaSyoYMCeKhvNfEk8_RTPTEl4xHVQ
 """
 
-import torch
-import pickle
+
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-from matplotlib import pyplot as plt
 from torchvision import transforms, models
-import pandas as pd
-from PIL import Image
-import numpy as np
-from torch.autograd import Variable
-from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 import image_dataloader
-
-
-device = torch.device('cpu') # cuda
-
-
-# Let's define a network
-# TODO pretrained model
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        
-        self.net = nn.Sequential()
-        #activation map of size 1x3x348x348
-        self.net.add_module('cv1', nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, stride=1, padding=0, dilation=1))
-        #activation map of size Bx16x346x346
-        self.net.add_module('rl1', nn.ReLU())
-        #activation map of size Bx16x346x346
-        self.net.add_module('mp1', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
-        #activation map of size Bx16x173x173
-        self.net.add_module('cv2', nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=0, dilation=1))
-        #activation map of size Bx32x171x171
-        self.net.add_module('rl2', nn.ReLU())
-        #activation map of size Bx32x171x171
-        self.net.add_module('mp2', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
-        #activation map of size Bx32x86x86
-        self.net.add_module('cv3', nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=0, dilation=1))
-        #activation map of size Bx64x84x84
-        self.net.add_module('rl3', nn.ReLU())
-        #activation map of size Bx64x84x84
-        self.net.add_module('mp3', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
-        #activation map of size Bx64x42x42
-        self.net.add_module('cv4', nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=0, dilation=1))
-        #activation map of size Bx128x40x40
-        self.net.add_module('rl4', nn.ReLU())
-        #activation map of size Bx128x40x40
-        self.net.add_module('mp4', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
-        #input size Bx128x20x20
-        self.net.add_module('dp1', nn.Dropout2d(p=0.25))
-        self.net.add_module('fl1', nn.Flatten())
-        self.net.add_module('fc1', nn.Linear(in_features=51200, out_features=256))
-        self.net.add_module('rl3', nn.ReLU())
-        self.net.add_module('dp2', nn.Dropout(p=0.5))
-        self.net.add_module('fc2', nn.Linear(in_features=256, out_features=43))
-        self.net.add_module('sm1', nn.LogSoftmax(dim=1))
-
-    def forward(self, x):
-        return self.net(x)
-    
-model = models.alexnet(pretrained = True)
-
-# Let's define an optimizer
-
-optimizer = optim.Adam(model.parameters(), lr=0.001)
-
-# Let's define a Loss function
-
-lossfun = nn.NLLLoss()  # Use nn.CrossEntropyLoss with softmax
-
-
-cwd = os.getcwd()
-
-images_root_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
-train_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/train.txt')
-val_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/val.txt')
-test_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/test.txt')
-img_height = 348
-img_width = 348
-batch_size = 32
-num_workers = 4
-
-dataloader = GroceryStoreDataloader(images_root_path,
-                                    train_csv_path,
-                                    val_csv_path,
-                                    test_csv_path,
-                                    img_height,
-                                    img_width,
-                                    batch_size,
-                                    num_workers)
-
-dataloader.setup()
-
-train_dataloader = dataloader.train_dataloader()
-val_dataloader = dataloader.val_dataloader()
-
-# Let's train our model
+import os
 
 def train(epoch):
     model.train()
@@ -133,6 +41,43 @@ def validation(epoch):
         loss_train = lossfun(output_val, labels)
         total_loss += loss_train
     return(total_loss)
+    
+model = models.alexnet(pretrained = True)
+
+# Let's define an optimizer
+
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# Let's define a Loss function
+
+lossfun = nn.NLLLoss()  # Use nn.CrossEntropyLoss with softmax
+
+if __name__ == '__main__':
+    cwd = os.getcwd()
+
+    images_root_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
+    train_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/train.txt')
+    val_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/val.txt')
+    test_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/test.txt')
+    img_height = 348
+    img_width = 348
+    batch_size = 32
+    num_workers = 4
+
+    dataloader = image_dataloader.GroceryStoreDataloader(images_root_path,
+                                        train_csv_path,
+                                        val_csv_path,
+                                        test_csv_path,
+                                        img_height,
+                                        img_width,
+                                        batch_size,
+                                        num_workers)
+
+    dataloader.setup()
+
+    train_dataloader = dataloader.train_dataloader()
+    val_dataloader = dataloader.val_dataloader()
+
 
 
 # defining the number of epochs
@@ -147,93 +92,3 @@ for epoch in range(n_epochs):
     print(validation(epoch))
 
 
-
-# If I want to go with a pretrained model
-"""
-def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
-    since = time.time()
-
-    best_model_wts = copy.deepcopy(model.state_dict())
-    best_acc = 0.0
-
-    for epoch in range(num_epochs):
-        print('Epoch {}/{}'.format(epoch, num_epochs - 1))
-        print('-' * 10)
-
-        # Each epoch has a training and validation phase
-        for phase in ['train', 'val']:
-            if phase == 'train':
-                model.train()  # Set model to training mode
-            else:
-                model.eval()   # Set model to evaluate mode
-
-            running_loss = 0.0
-            running_corrects = 0
-
-            # Iterate over data.
-            for inputs, labels in dataloaders[phase]:
-                inputs = inputs.to(device)
-                labels = labels.to(device)
-
-                # zero the parameter gradients
-                optimizer.zero_grad()
-
-                # forward
-                # track history if only in train
-                with torch.set_grad_enabled(phase == 'train'):
-                    outputs = model(inputs)
-                    _, preds = torch.max(outputs, 1)
-                    loss = criterion(outputs, labels)
-
-                    # backward + optimize only if in training phase
-                    if phase == 'train':
-                        loss.backward()
-                        optimizer.step()
-
-                # statistics
-                running_loss += loss.item() * inputs.size(0)
-                running_corrects += torch.sum(preds == labels.data)
-            if phase == 'train':
-                scheduler.step()
-
-            epoch_loss = running_loss / dataset_sizes[phase]
-            epoch_acc = running_corrects.double() / dataset_sizes[phase]
-
-            print('{} Loss: {:.4f} Acc: {:.4f}'.format(
-                phase, epoch_loss, epoch_acc))
-
-            # deep copy the model
-            if phase == 'val' and epoch_acc > best_acc:
-                best_acc = epoch_acc
-                best_model_wts = copy.deepcopy(model.state_dict())
-
-        print()
-
-    time_elapsed = time.time() - since
-    print('Training complete in {:.0f}m {:.0f}s'.format(
-        time_elapsed // 60, time_elapsed % 60))
-    print('Best val Acc: {:4f}'.format(best_acc))
-
-    # load best model weights
-    model.load_state_dict(best_model_wts)
-    return model
-
-model_ft = models.resnet18(pretrained=True)
-num_ftrs = model_ft.fc.in_features
-# Here the size of each output sample is set to 2.
-# Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
-model_ft.fc = nn.Linear(num_ftrs, 2)
-
-model_ft = model_ft.to(device)
-
-criterion = nn.CrossEntropyLoss()
-
-# Observe that all parameters are being optimized
-optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
-
-# Decay LR by a factor of 0.1 every 7 epochs
-exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
-
-model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler,
-                       num_epochs=25)
-"""

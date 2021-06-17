@@ -8,57 +8,59 @@ Original file is located at
 """
 
 import torch
+import pickle
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from matplotlib import pyplot as plt
 from torchvision import transforms, models
-import os
 import pandas as pd
 from PIL import Image
 import numpy as np
 from torch.autograd import Variable
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 
 device = torch.device('cpu') # cuda
 
+with open("train_x.txt", "rb") as fp:   # Unpickling
+    train_x = pickle.load(fp)
 
-# load food item images dataset
-cwd = os.getcwd()
-data_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/train.txt')
-df = pd.read_csv(data_path, delimiter = ',', names=["path", "precision", "name"])
-df2 = pd.read_csv(data_path, delimiter = ',', names=["path", "precision", "name"])
+with open("train_y.txt", "rb") as fp:   # Unpickling
+    train_y = pickle.load(fp)
 
-img_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
+with open("test_x.txt", "rb") as fp:   # Unpickling
+    test_x = pickle.load(fp)
 
-train_x = []
-train_y = []
-for row in df['path'].values:
-    img_path2 = img_path + row
-    image = Image.open(img_path2)
-    image = transforms.ToTensor()(image).unsqueeze(0)
-    image = image[:,:,0:348,0:348]
-    train_x.append(image)
-    target = row.split('/')[2]
-    train_y.append(target)
+with open("test_y.txt", "rb") as fp:   # Unpickling
+    test_y = pickle.load(fp)
+#TODO save/open without pickle
 
-x_train = torch.stack(train_x)
-y_train = train_y
+label_encoder = LabelEncoder()
+
+def onehot(liststring):
+    values = np.array(liststring)
+    # integer encode
+    integer_encoded = label_encoder.fit_transform(values)
+    # binary encode
+    onehot_encoder = OneHotEncoder(sparse=False)
+    integer_encoded = integer_encoded.reshape(len(integer_encoded), 1)
+    encoded = onehot_encoder.fit_transform(integer_encoded)
+    return encoded
 
 
-test_x = []
-test_y = []
-for row in df2['path'].values:
-    img_path2 = img_path + row
-    image = Image.open(img_path2)
-    image = transforms.ToTensor()(image).unsqueeze(0)
-    image = image[:,:,0:348,0:348]
-    test_x.append(image)
-    target = row.split('/')[2]
-    test_y.append(target)
+train_x = torch.stack(train_x)
+#TODO torch.cat()
+train_x = torch.squeeze(train_x)
 
-x_test = torch.stack(test_x)
-y_test = torch.stack(test_y)
+train_y = onehot(train_y)
+print(train_y)
+inverted_train = label_encoder.inverse_transform([np.argmax(train_y[500, :])])
+print(inverted_train)
+
+test_x = torch.stack(test_x)
+test_x = torch.squeeze(test_x)
+test_y = onehot(test_y)
 
 
 # Let's define a network
@@ -69,24 +71,36 @@ class Net(nn.Module):
         
         self.net = nn.Sequential()
         #activation map of size 1x3x348x348
-        self.net.add_module('cv1', nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, stride=1, padding=0, dilation=1))
-        #activation map of size Bx32x346x346
+        self.net.add_module('cv1', nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, stride=1, padding=0, dilation=1))
+        #activation map of size Bx16x346x346
         self.net.add_module('rl1', nn.ReLU())
-        #activation map of size Bx32x346x346
+        #activation map of size Bx16x346x346
         self.net.add_module('mp1', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
-        #activation map of size Bx32x173x173
-        self.net.add_module('cv2', nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=0, dilation=1))
-        #activation map of size Bx64x171x171
+        #activation map of size Bx16x173x173
+        self.net.add_module('cv2', nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=0, dilation=1))
+        #activation map of size Bx32x171x171
         self.net.add_module('rl2', nn.ReLU())
-        #activation map of size Bx64x171x171
+        #activation map of size Bx32x171x171
         self.net.add_module('mp2', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
-        #input size Bx64x86x86
+        #activation map of size Bx32x86x86
+        self.net.add_module('cv3', nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=0, dilation=1))
+        #activation map of size Bx64x84x84
+        self.net.add_module('rl3', nn.ReLU())
+        #activation map of size Bx64x84x84
+        self.net.add_module('mp3', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
+        #activation map of size Bx64x42x42
+        self.net.add_module('cv4', nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=0, dilation=1))
+        #activation map of size Bx128x40x40
+        self.net.add_module('rl4', nn.ReLU())
+        #activation map of size Bx128x40x40
+        self.net.add_module('mp4', nn.MaxPool2d(kernel_size=2, stride=None, padding=0, dilation=1))
+        #input size Bx128x20x20
         self.net.add_module('dp1', nn.Dropout2d(p=0.25))
         self.net.add_module('fl1', nn.Flatten())
-        self.net.add_module('fc1', nn.Linear(in_features=473344, out_features=128))
+        self.net.add_module('fc1', nn.Linear(in_features=51200, out_features=256))
         self.net.add_module('rl3', nn.ReLU())
         self.net.add_module('dp2', nn.Dropout(p=0.5))
-        self.net.add_module('fc2', nn.Linear(in_features=128, out_features=10))
+        self.net.add_module('fc2', nn.Linear(in_features=256, out_features=43))
         self.net.add_module('sm1', nn.LogSoftmax(dim=1))
 
     def forward(self, x):
@@ -104,7 +118,58 @@ lossfun = nn.NLLLoss()  # Use nn.CrossEntropyLoss with softmax
 
 
 # Let's train our model
-'''
+
+def train(epoch):
+    model.train()
+    tr_loss = 0
+    # getting the training set
+    x_train, y_train = torch.Tensor(train_x), torch.Tensor(train_y)
+    # getting the validation set
+    x_test, y_test = torch.Tensor(test_x), torch.Tensor(test_y)
+    print(x_train.size())
+    print(y_train.size())
+    # converting the data into GPU format
+    if torch.cuda.is_available():
+        x_train = x_train.cuda()
+        y_train = y_train.cuda()
+        x_test = x_test.cuda()
+        y_test = y_test.cuda()
+
+    # clearing the Gradients of the model parameters
+    optimizer.zero_grad()
+    
+    # prediction for training and validation set
+    output_train = model(x_train)
+    output_val = model(x_test)
+
+    # computing the training and validation loss
+    loss_train = lossfun(output_train, y_train)
+    loss_test = lossfun(output_val, y_test)
+    train_losses.append(loss_train)
+    test_losses.append(loss_test)
+
+    # computing the updated weights of all the model parameters
+    loss_train.backward()
+    optimizer.step()
+    tr_loss = loss_train.item()
+    if epoch%2 == 0:
+        # printing the validation loss
+        print('Epoch : ',epoch+1, '\t', 'loss :', loss_test)
+
+
+# defining the number of epochs
+n_epochs = 25
+# empty list to store training losses
+train_losses = []
+# empty list to store validation losses
+test_losses = []
+# training the model
+for epoch in range(n_epochs):
+    train(epoch)
+
+
+# If I want to go with a pretrained model
+"""
 def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
     since = time.time()
 
@@ -173,7 +238,6 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
     model.load_state_dict(best_model_wts)
     return model
 
-
 model_ft = models.resnet18(pretrained=True)
 num_ftrs = model_ft.fc.in_features
 # Here the size of each output sample is set to 2.
@@ -191,53 +255,5 @@ optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 
 model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler,
-                       num_epochs=25)'''
-
-
-def train(epoch):
-    model.train()
-    tr_loss = 0
-    # getting the training set
-    #x_train, y_train = torch.Tensor(train_x), torch.Tensor(train_y)
-    # getting the validation set
-    #x_test, y_test = torch.Tensor(test_x), torch.Tensor(test_y)
-    print(x_train.size())
-    print(y_train.size())
-    # converting the data into GPU format
-    if torch.cuda.is_available():
-        x_train = x_train.cuda()
-        y_train = y_train.cuda()
-        x_test = x_test.cuda()
-        y_test = y_test.cuda()
-
-    # clearing the Gradients of the model parameters
-    optimizer.zero_grad()
-    
-    # prediction for training and validation set
-    output_train = model(x_train)
-    output_val = model(x_test)
-
-    # computing the training and validation loss
-    loss_train = lossfun(output_train, y_train)
-    loss_test = lossfun(output_val, y_test)
-    train_losses.append(loss_train)
-    test_losses.append(loss_test)
-
-    # computing the updated weights of all the model parameters
-    loss_train.backward()
-    optimizer.step()
-    tr_loss = loss_train.item()
-    if epoch%2 == 0:
-        # printing the validation loss
-        print('Epoch : ',epoch+1, '\t', 'loss :', loss_test)
-
-
-# defining the number of epochs
-n_epochs = 25
-# empty list to store training losses
-train_losses = []
-# empty list to store validation losses
-val_losses = []
-# training the model
-for epoch in range(n_epochs):
-    train(epoch)
+                       num_epochs=25)
+"""

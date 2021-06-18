@@ -1,5 +1,5 @@
 import pandas as pd
-df = pd.read_csv('data\\cluster_food.csv')
+df = pd.read_csv('data/cluster_food.csv')
 
 
 def recommendation(food_choice):

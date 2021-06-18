@@ -5,7 +5,7 @@ from gensim.models import KeyedVectors
 from sklearn.metrics.pairwise import cosine_similarity
 
 cwd = os.getcwd()
-df = pd.read_csv(os.path.join(cwd, 'data\\merged_dataset_large.csv'))
+df = pd.read_csv(os.path.join(cwd, 'data/merged_dataset_large.csv'))
 known_embeddings = df['Word Embedding'].apply(lambda x:
                            np.fromstring(
                                x.replace('\n','')
@@ -15,7 +15,7 @@ known_embeddings = df['Word Embedding'].apply(lambda x:
 known_embeddings = known_embeddings.tolist()
 known_embeddings = np.array(known_embeddings)
 
-model_path = os.path.join(cwd, 'saved_models\\word2vec.wordvectors')
+model_path = os.path.join(cwd, 'saved_models/word2vec.wordvectors')
 wv = KeyedVectors.load(model_path, mmap='r')
 
 
@@ -29,12 +29,14 @@ def recognize_item(item_name, emb=known_embeddings):
     embedding = np.zeros(100)
     for i, word in enumerate(item_name.split()):
         embedding = np.add(embedding, wv[word])
-    embedding = embedding / (i + 1)
+        embedding = embedding / (i + 1)
     similarities = cosine_similarity([embedding], emb)
     max_index = np.argmax(similarities)
     return df.loc[max_index]
 
 
+
+'''
 if __name__ == '__main__':
     print("Welcome to Green Bites!")
     print("Enter 'Q' to exit")
@@ -49,3 +51,4 @@ if __name__ == '__main__':
             user_item = input("Enter another item: ")
 
     print("Happy shopping!")
+    '''

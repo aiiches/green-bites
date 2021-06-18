@@ -101,7 +101,7 @@ if __name__ == '__main__':
     val_dataloader = dataloader.val_dataloader()
 
     # defining the number of epochs
-    n_epochs = 10
+    n_epochs = 3
     # empty list to store training losses
     train_losses = []
     # empty list to store validation losses
@@ -115,12 +115,12 @@ if __name__ == '__main__':
 
         train(epoch, device)
         print(f"Validation loss: {validation(epoch, device)}")
-        val_losses = val_losses.append(validation(epoch, device))
+        val_losses.append(validation(epoch, device))
 
     print("Done!")
 
-    #PATH = "entire_model.pt"
-    # torch.save(model, PATH)
+    PATH = "first_model.pt"
+    torch.save(model, PATH)
 
     #plt.plot(val_losses)
     #plt.show()

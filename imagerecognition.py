@@ -14,6 +14,7 @@ import image_dataloader
 import os
 import tqdm
 import torch
+import matplotlib.pyplot as plt
 
 def train(epoch, device):
     model.train()
@@ -100,11 +101,11 @@ if __name__ == '__main__':
     val_dataloader = dataloader.val_dataloader()
 
     # defining the number of epochs
-    n_epochs = 10
+    n_epochs = 3
     # empty list to store training losses
     train_losses = []
     # empty list to store validation losses
-    test_losses = []
+    val_losses = []
     # training the model
 
     print("Training model")
@@ -114,7 +115,13 @@ if __name__ == '__main__':
 
         train(epoch, device)
         print(f"Validation loss: {validation(epoch, device)}")
+        val_losses.append(validation(epoch, device))
 
     print("Done!")
 
+    PATH = "first_model.pt"
+    torch.save(model, PATH)
+
+    #plt.plot(val_losses)
+    #plt.show()
 

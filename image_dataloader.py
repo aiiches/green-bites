@@ -31,8 +31,10 @@ class GroceryStoreDataset(torch.utils.data.Dataset):
             self.labels_list.append(label)
 
         self.transforms = transforms.Compose([
-                transforms.ToTensor(),
-                transforms.Resize((img_height, img_width))
+                #transforms.RandomHorizontalFlip(),
+                #transforms.ToPILImage(),
+                transforms.Resize((img_height, img_width)),
+                transforms.ToTensor()
             ])
 
     def __len__(self):

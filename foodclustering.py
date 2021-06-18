@@ -1,10 +1,11 @@
-"""Importing Libraries"""
+"""
+Importing Libraries
+"""
 
 #for data frame processing
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-
 
 #for clustering
 from sklearn.cluster import KMeans
@@ -19,6 +20,8 @@ def print_divider():
     print_divider prints a dividing line (===).
     """
     print("==============================================================================================================")
+    
+#End of print_divider---------------------------------------------------------------------------------------------------------------------------
 
 def load_and_process_data (df):
     """
@@ -27,7 +30,7 @@ def load_and_process_data (df):
        :param df: the data frame (merged_dataset_large.csv)
        :return: updated df
     """
-
+    
     #getting general idea about data frame (df)
     df.describe()
     df.head()
@@ -45,6 +48,8 @@ def load_and_process_data (df):
     print_divider()
 
     return df
+
+#End of load_and_process_data---------------------------------------------------------------------------------------------------------------------------
 
 def data_normalization (df):
 
@@ -78,6 +83,7 @@ def data_normalization (df):
 
     return df
 
+#End of data_normalization---------------------------------------------------------------------------------------------------------------------------
 
 def clustering (df):
 
@@ -139,7 +145,9 @@ def clustering (df):
         #centroids = kmeans.cluster_centers_
         #print(centroids)
 
+#End of clustering----------------------------------------------------------------------------------------------------------------------------
 
+#function calls
 load_and_process_data (df)
 data_normalization (df)
 clustering (df)

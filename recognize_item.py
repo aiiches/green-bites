@@ -5,7 +5,7 @@ from gensim.models import KeyedVectors
 from sklearn.metrics.pairwise import cosine_similarity
 
 cwd = os.getcwd()
-df = pd.read_csv(os.path.join(cwd, 'data\\merged_dataset_large.csv'))
+df = pd.read_csv(os.path.join(cwd, 'data/merged_dataset.csv'))
 known_embeddings = df['Word Embedding'].apply(lambda x:
                            np.fromstring(
                                x.replace('\n','')
@@ -15,7 +15,7 @@ known_embeddings = df['Word Embedding'].apply(lambda x:
 known_embeddings = known_embeddings.tolist()
 known_embeddings = np.array(known_embeddings)
 
-model_path = os.path.join(cwd, 'saved_models\\word2vec.wordvectors')
+model_path = os.path.join(cwd, 'saved_models/word2vec.wordvectors')
 wv = KeyedVectors.load(model_path, mmap='r')
 
 

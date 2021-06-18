@@ -1,0 +1,3 @@
+.DS_Store
+./GreenBites/node_modules/*
+./GreenBites/ios/Pods/*

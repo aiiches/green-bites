@@ -16,7 +16,7 @@ import tqdm
 import torch
 
 def train(epoch, device):
-    model.train()
+    model.train() #c1 add epoch
 
     tr_loss = 0
     # getting the training set

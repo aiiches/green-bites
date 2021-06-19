@@ -15,7 +15,7 @@ image = image[:,:,0:348,0:348]
 df = pd.read_csv(img_path + '/clean_classes.csv')
 
 
-model_name = "first_model.pt"
+model_name = "second_model.pt"
 model = torch.load(model_name)
 
 print(image.size())

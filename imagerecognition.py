@@ -101,7 +101,7 @@ if __name__ == '__main__':
     val_dataloader = dataloader.val_dataloader()
 
     # defining the number of epochs
-    n_epochs = 3
+    n_epochs = 7
     # empty list to store training losses
     train_losses = []
     # empty list to store validation losses
@@ -119,7 +119,7 @@ if __name__ == '__main__':
 
     print("Done!")
 
-    PATH = "first_model.pt"
+    PATH = "second_model.pt"
     torch.save(model, PATH)
 
     #plt.plot(val_losses)

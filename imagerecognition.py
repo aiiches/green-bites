@@ -16,6 +16,7 @@ import tqdm
 import torch
 import matplotlib.pyplot as plt
 
+
 def train(epoch, device):
     model.train()
 
@@ -76,6 +77,8 @@ if __name__ == '__main__':
     print("Initializing model")
     model = models.alexnet(pretrained=True)
     model.classifier[6] = nn.Linear(4096, num_classes)
+    #model_name = "fifth_model.pt"
+    #model = torch.load(model_name)
     model = model.to(device)
 
     # Let's define an optimizer
@@ -101,27 +104,43 @@ if __name__ == '__main__':
     val_dataloader = dataloader.val_dataloader()
 
     # defining the number of epochs
-    n_epochs = 7
+    n_epochs = 2
     # empty list to store training losses
     train_losses = []
     # empty list to store validation losses
     val_losses = []
+    # empty list to store validation accuracy
+    #val_acu = []
     # training the model
 
     print("Training model")
 
     for epoch in tqdm.trange(n_epochs):
         print(f"Training epoch {epoch}")
+        train_losses.append(train(epoch, device))
+
 
         train(epoch, device)
         print(f"Validation loss: {validation(epoch, device)}")
         val_losses.append(validation(epoch, device))
+        #accuracy = (output.argmax(-1) == labels).float().mean()
+        #val_acu.append(validation(epoch, device))
 
     print("Done!")
 
-    PATH = "second_model.pt"
+    PATH = "sixth_model.pt"
     torch.save(model, PATH)
 
-    #plt.plot(val_losses)
-    #plt.show()
+    plt.figure(figsize=(10, 5))
+    #plt.subplot(1, 2, 1)
+    plt.plot(val_losses)
+    plt.xlabel('batch')
+    plt.ylabel('loss')
+    #plt.subplot(1, 2, 2)
+    #plt.plot(val_acu)
+    #plt.xlabel('batch')
+    #plt.ylabel('accuracy')
+    #plt.plot(train_losses, label='Training loss')
+    #plt.plot(val_losses, label = 'Validation loss')
+    plt.show()
 

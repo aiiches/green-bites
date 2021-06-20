@@ -15,6 +15,7 @@ import os
 import tqdm
 import torch
 import matplotlib.pyplot as plt
+from testshuffling import *
 
 
 def train(epoch, device):
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     cwd = os.getcwd()
 
     images_root_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
-    train_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/train.txt')
+    train_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/shuffledtrain.txt')
     val_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/val.txt')
     test_csv_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/test.txt')
     img_height = 348
@@ -118,6 +119,7 @@ if __name__ == '__main__':
     for epoch in tqdm.trange(n_epochs):
         print(f"Training epoch {epoch}")
         train_losses.append(train(epoch, device))
+        shuffling()
 
 
         train(epoch, device)

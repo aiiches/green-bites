@@ -59,9 +59,10 @@ In order to provide helpful recommendations to the user, the food items were clu
 information. This way, recommended alternatives will provide the user with similar nutritional value. To cluster all 
 of the items, the following machine learning techniques were used:
 
-1. Cluster Analysis: We used the Elbow Method as a heuristic to determine the number of clusters in our  dataset.
-2. Hyperparameter Optimization: The K-means++ algorithm was used to resolve the random assignment of centroids in each cluster.
-3. Constrained Clustering: We used k-means-constrained clustering to set a maximum and minimum cluster sizes.
+1. Cluster Analysis: We used the Elbow Method as a heuristic to find the optimal number of clusters for our  dataset.
+2. Features selection: we used data visualisations to choose the nutritional values with the most samples.
+3. Hyperparameter Optimization: The K-means++ algorithm was used to resolve the random assignment of centroids in each cluster.
+4. Constrained Clustering: We used k-means-constrained clustering to set a maximum and minimum cluster sizes.
 
 ## Our vision
 The current iteration of *Green Bites* is simply a prototype, intended to demonstrate the utility and potential of 

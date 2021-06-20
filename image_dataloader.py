@@ -31,9 +31,9 @@ class GroceryStoreDataset(torch.utils.data.Dataset):
             self.images_list.append(image_path)
             self.labels_list.append(label)
 
-        #temp = list(zip(self.images_list, self.labels_list))
-        #random.shuffle(temp)
-        #self.images_list, self.labels_list = zip(*temp)
+        temp = list(zip(self.images_list, self.labels_list))
+        random.shuffle(temp)
+        self.images_list, self.labels_list = zip(*temp)
 
 
         self.transforms = transforms.Compose([

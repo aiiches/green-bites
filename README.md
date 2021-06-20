@@ -57,7 +57,7 @@ in more specific recommendations.
 ### Clustering
 In order to provide helpful recommendations to the user, the food items were clustered based on their nutritional
 information. This way, recommended alternatives will provide the user with similar nutritional value. To cluster all 
-of the items, the following machine learning techniques were used:
+of the items, the following unsupervised machine learning techniques were used:
 
 1. Cluster Analysis: We used the Elbow Method as a heuristic to find the optimal number of clusters for our  dataset.
 2. Features selection: we used data visualisations to choose the nutritional values with the most samples.

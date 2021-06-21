@@ -1,6 +1,7 @@
 from recommendations import recommendation
 from testvision import food_vision
 import recognize_item as r
+from imagerecognition import ModifiedAlexNet
 
 
 class the_proccess(object):

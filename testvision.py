@@ -5,7 +5,6 @@ import pandas as pd
 from PIL import Image
 from imagerecognition import ModifiedAlexNet
 
-
 def food_vision(test_img_path):
     #to open the image from the given path
     cwd = os.getcwd()

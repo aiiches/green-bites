@@ -3,6 +3,7 @@ from torchvision import transforms
 import os
 import pandas as pd
 from PIL import Image
+from imagerecognition import ModifiedAlexNet
 
 cwd = os.getcwd()
 img_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
@@ -38,3 +39,4 @@ print(ClassRow)
 ClassString = ClassRow['Coarse Class Name (str)']
 
 print(ClassString)
+

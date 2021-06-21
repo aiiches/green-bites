@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Searchbar } from 'react-native-paper';
+
 import {Input,StyleSheet,View,Text,Image,Button,SafeAreaView,ScrollView,StatusBar} from 'react-native';
 
 const MyComponent = () => {
@@ -23,9 +24,9 @@ const MyComponent = () => {
       />
       <View style={{margin:'10%',backgroundColor:'#539c8b', borderRadius:20}}>
         <Text style={[styles.text,{paddingTop: '5%'}]}>
-          {searchQuery}{"\n"}
+          {searchQuery}
         </Text>
-        <Text style={[{fontSize:15,paddingBottom: '5%',paddingLeft: '8%'}]}>{searchResult}</Text>
+        <Text style={[{textAlign:'left',fontSize:8,paddingTop:'-10%',paddingBottom: '5%',paddingLeft: '8%',paddingRight: '8%'}]}>{"\n"}{searchResult}</Text>
       </View>
       
     </View>
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
+    paddingBottom:'-10%',
     paddingLeft: '8%',
     fontSize: 30,
     fontFamily: 'Roboto-Light',

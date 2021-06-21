@@ -151,12 +151,3 @@ def clustering (df):
 load_and_process_data (df)
 data_normalization (df)
 clustering (df)
-
-
-
-
-
-
-
-
-

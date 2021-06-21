@@ -3,6 +3,7 @@ from torchvision import transforms
 import os
 import pandas as pd
 from PIL import Image
+from imagerecognition import ModifiedAlexNet
 
 def food_vision(test_img_path):
     #to open the image from the given path
@@ -18,8 +19,8 @@ def food_vision(test_img_path):
     df = pd.read_csv(img_path + '/clean_classes.csv')
 
     #CNN model
-    model_name = "fifth_model.pt"
-    model = torch.load(model_name)
+    model_name = "googlenet_model.pt"
+    model = torch.load(model_name, map_location=torch.device('cpu'))
 
     #to ge the image size
     #print(image.size())

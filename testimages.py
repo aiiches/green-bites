@@ -8,10 +8,10 @@ from imagerecognition import ModifiedAlexNet
 cwd = os.getcwd()
 img_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
 
-#img_path2 = img_path + '/test/Fruit/Melon/Watermelon/Watermelon_044.jpg'
-#img_path2 = img_path + '/test/Packages/Milk/Arla-Lactose-Medium-Fat-Milk/Arla-Lactose-Medium-Fat-Milk_001.jpg'
-#img_path2 = img_path + 'test/Vegetables/Potato/Floury-Potato/Floury-Potato_016.jpg'
-#img_path2 = img_path + 'test/Fruit/Avocado/Avocado_030.jpg'
+#img_path2 = img_path + '/test/Fruit/Melon/Watermelon/Watermelon_017.jpg'
+#img_path2 = img_path + '/test/Packages/Milk/Arla-Lactose-Medium-Fat-Milk/Arla-Lactose-Medium-Fat-Milk_005.jpg'
+#img_path2 = img_path + 'test/Vegetables/Potato/Floury-Potato/Floury-Potato_002.jpg'
+img_path2 = img_path + 'test/Fruit/Avocado/Avocado_017.jpg'
 
 
 image = Image.open(img_path2)
@@ -22,7 +22,7 @@ df = pd.read_csv(img_path + '/clean_classes.csv')
 
 
 
-model_name = "seventh_model.pt"
+model_name = "googlenet_model.pt"
 model = torch.load(model_name, map_location=torch.device('cpu'))
 
 predictions = model(image)

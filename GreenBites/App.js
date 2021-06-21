@@ -1,19 +1,19 @@
 import React, {Component} from 'react';
 import {StyleSheet,View,Text,Image,Button,ImageBackground} from 'react-native';
 import LoginScreen from './screen/Login';
+import MainTabScreen from './screen/MainTabScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { Assets, createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 function splashScreen({navigation}) {
   setTimeout(() => {
-    navigation.replace('LoginPage') // Stack Name
+    navigation.replace('MainScreen') // Stack Name
   }, 3000);
   return (
     <View>
       <ImageBackground source={require('./assets/background.png')} style={{height:'100%', width:'100%'}}>
         <Image source={require('./assets/logo.png')} style={{position: 'absolute', bottom: '50%'}}/>
-        
       </ImageBackground>
     </View>
   )
@@ -43,7 +43,7 @@ export default function App() {
      <NavigationContainer>
        <Stack.Navigator headerMode="none">
          <Stack.Screen name="splash_Screen" component={splashScreen}/>
-         <Stack.Screen name="LoginPage" component={LoginScreen}/>
+         <Stack.Screen name="MainScreen" component={MainTabScreen}/>
        </Stack.Navigator>
      </NavigationContainer>
   );

@@ -7,6 +7,7 @@ from imagerecognition import ModifiedAlexNet
 
 cwd = os.getcwd()
 img_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
+
 #img_path2 = img_path + '/test/Fruit/Melon/Watermelon/Watermelon_044.jpg'
 #img_path2 = img_path + '/test/Packages/Milk/Arla-Lactose-Medium-Fat-Milk/Arla-Lactose-Medium-Fat-Milk_001.jpg'
 #img_path2 = img_path + 'test/Vegetables/Potato/Floury-Potato/Floury-Potato_016.jpg'
@@ -20,10 +21,9 @@ image = image[:,:,0:348,0:348]
 df = pd.read_csv(img_path + '/clean_classes.csv')
 
 
+
 model_name = "seventh_model.pt"
 model = torch.load(model_name, map_location=torch.device('cpu'))
-
-print(image.size())
 
 predictions = model(image)
 #(1, 43)

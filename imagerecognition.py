@@ -30,7 +30,7 @@ def train(epoch, device):
         optimizer.zero_grad()
 
         # prediction for training set
-        output_train = model(images)
+        output_train = model.forward(images)
 
         # computing the training loss
         loss_train = lossfun(output_train, labels)
@@ -40,22 +40,37 @@ def train(epoch, device):
         optimizer.step()
         tr_loss = loss_train.item()
 
+        del images
+        del labels
+
 
 def validation(epoch, device):
     model.eval()
     total_loss = 0
+    with torch.no_grad():
+        for batch in val_dataloader:
+            images, labels = batch
+            images = images.to(device)
+            labels = labels.to(device)
 
-    for batch in val_dataloader:
-        images, labels = batch
-        images = images.to(device)
-        labels = labels.to(device)
-
-        output_val = model(images)
-        loss_train = lossfun(output_val, labels)
-        total_loss += loss_train
+            output_val = model.forward(images)
+            loss_train = lossfun(output_val, labels)
+            total_loss += float(loss_train.detach())
     return(total_loss)
-    
 
+    
+class ModifiedAlexNet(nn.Module):
+    def __init__(self, pretrained_model, num_classes):
+        super(ModifiedAlexNet, self).__init__()
+        self.pretrained = pretrained_model
+        self.new_layers = nn.Sequential(nn.ReLU(),
+                                        nn.Linear(1000, num_classes),
+                                        nn.Softmax(dim=1))
+    
+    def forward(self, x):
+        x = self.pretrained(x)
+        x = self.new_layers(x)
+        return x
 
 if __name__ == '__main__':
 
@@ -74,13 +89,13 @@ if __name__ == '__main__':
     num_classes = 43
 
     print("Initializing model")
-    model = models.alexnet(pretrained=True)
-    model.classifier[6] = nn.Linear(4096, num_classes)
+    pretrained_model = models.alexnet(pretrained=True)
+    model = ModifiedAlexNet(pretrained_model, num_classes)
     model = model.to(device)
-
+    print(model)
     # Let's define an optimizer
     print("Initializing optimizer")
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.00001)
 
     # Let's define a Loss function
     lossfun = nn.CrossEntropyLoss()  # Use nn.CrossEntropyLoss with softmax
@@ -99,9 +114,10 @@ if __name__ == '__main__':
 
     train_dataloader = dataloader.train_dataloader()
     val_dataloader = dataloader.val_dataloader()
+    test_dataloader = dataloader.test_dataloader()
 
     # defining the number of epochs
-    n_epochs = 7
+    n_epochs = 20
     # empty list to store training losses
     train_losses = []
     # empty list to store validation losses
@@ -117,11 +133,24 @@ if __name__ == '__main__':
         print(f"Validation loss: {validation(epoch, device)}")
         val_losses.append(validation(epoch, device))
 
-    print("Done!")
-
-    PATH = "second_model.pt"
+    PATH = "saved_models/seventh_model.pt"
     torch.save(model, PATH)
 
+    test_correct = []
+
+    with torch.no_grad():
+        for batch in test_dataloader:
+            images, labels = batch
+            images = images.to(device)
+            labels = labels.to(device)
+
+            predictions = model.forward(images)
+            correct_predictions = (torch.argmax(predictions, dim=1) == labels).type(torch.FloatTensor)
+            test_correct.append(correct_predictions)
+
+    test_correct = torch.stack(test_correct)
+
+    print(torch.mean(test_correct))
     #plt.plot(val_losses)
     #plt.show()
 

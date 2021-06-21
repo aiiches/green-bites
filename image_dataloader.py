@@ -99,6 +99,7 @@ class GroceryStoreDataloader(pl.LightningDataModule):
         return torch.utils.data.DataLoader(
             self.train_dataset,
             batch_size=self.batch_size,
+            shuffle=True,
             num_workers=self.num_workers,
             drop_last=True
             )
@@ -106,10 +107,12 @@ class GroceryStoreDataloader(pl.LightningDataModule):
 
     def val_dataloader(self):
         return torch.utils.data.DataLoader(
-            self.val_dataset,
+            self.train_dataset,
             batch_size=self.batch_size,
-            drop_last=True,
-            num_workers=self.num_workers)
+            shuffle=True,
+            num_workers=self.num_workers,
+            drop_last=True
+            )
 
     def test_dataloader(self):
         return torch.utils.data.DataLoader(
@@ -147,6 +150,3 @@ if __name__ == '__main__':
 
     pp(images.shape)
     pp(labels.shape)
-
-
-    

@@ -3,11 +3,16 @@ from torchvision import transforms
 import os
 import pandas as pd
 from PIL import Image
+from imagerecognition import ModifiedAlexNet
 
 cwd = os.getcwd()
 img_path = os.path.join(cwd, 'data/GroceryStoreDataset-master/dataset/')
 #img_path2 = img_path + '/test/Fruit/Melon/Watermelon/Watermelon_044.jpg'
-img_path2 = img_path + '/test/Packages/Milk/Arla-Lactose-Medium-Fat-Milk/Arla-Lactose-Medium-Fat-Milk_001.jpg'
+#img_path2 = img_path + '/test/Packages/Milk/Arla-Lactose-Medium-Fat-Milk/Arla-Lactose-Medium-Fat-Milk_001.jpg'
+#img_path2 = img_path + 'test/Vegetables/Potato/Floury-Potato/Floury-Potato_016.jpg'
+#img_path2 = img_path + 'test/Fruit/Avocado/Avocado_030.jpg'
+
+
 image = Image.open(img_path2)
 image = transforms.ToTensor()(image).unsqueeze(0)
 image = image[:,:,0:348,0:348]
@@ -15,8 +20,8 @@ image = image[:,:,0:348,0:348]
 df = pd.read_csv(img_path + '/clean_classes.csv')
 
 
-model_name = "second_model.pt"
-model = torch.load(model_name)
+model_name = "seventh_model.pt"
+model = torch.load(model_name, map_location=torch.device('cpu'))
 
 print(image.size())
 

@@ -3,7 +3,9 @@ import torch
 import numpy
 import pandas as pd
 import pytorch_lightning as pl
+import torch.nn.functional as F
 import random
+
 
 from pprint import pprint as pp
 from PIL import Image
@@ -99,26 +101,27 @@ class GroceryStoreDataloader(pl.LightningDataModule):
         return torch.utils.data.DataLoader(
             self.train_dataset,
             batch_size=self.batch_size,
+            drop_last=True,
             shuffle=True,
-            num_workers=self.num_workers,
-            drop_last=True
-            )
+            num_workers=self.num_workers)
+
 
 
     def val_dataloader(self):
         return torch.utils.data.DataLoader(
             self.train_dataset,
             batch_size=self.batch_size,
+            drop_last=True,
             shuffle=True,
-            num_workers=self.num_workers,
-            drop_last=True
-            )
+            num_workers=self.num_workers)
+
 
     def test_dataloader(self):
         return torch.utils.data.DataLoader(
             self.test_dataset,
             batch_size=self.batch_size,
             drop_last=True,
+            shuffle=True,
             num_workers=self.num_workers)
 
 if __name__ == '__main__':

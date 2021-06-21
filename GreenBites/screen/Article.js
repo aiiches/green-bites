@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Linking } from 'react-native';
 import {
   Text, 
   View,
@@ -16,15 +17,18 @@ export default class App extends React.Component {
           carouselItems: [
           {
               title:"Sustainable Diet: Everything you need to know",
-              text: "MEDLIFE DAILY",
+              text: "THE NUTRITION SOURCE",
+              imgUrl: "https://picsum.photos/id/123/200/300"
           },
           {
               title:"Ethical Eating Habits You Should Adopt Now",
               text: "PLANET FITNESS",
+              imgUrl: "https://picsum.photos/id/223/200/300"
           },
           {
               title:"Best Practices for Green Living",
               text: "FRESH CO",
+              imgUrl: "https://picsum.photos/id/1023/200/300"
           },
         ]
       }
@@ -32,23 +36,21 @@ export default class App extends React.Component {
 
     _renderItem({item,index}){
         return (
-          <View style={{
-            
-              backgroundColor:'floralwhite',
+          <View style={{borderRadius:20, marginTop:'10%'}}>
+            <ImageBackground style={{backgroundColor:'floralwhite',
+              overflow:'hidden',
               borderRadius: 20,
-              height: 500,
-              padding: 50,
-              marginTop: 50,
-              marginLeft: 40,
-              marginRight: -10,
-              justifyContent: 'center', 
-              alignItems: 'center'}}>
-            
-            <View style={{textAlign:'center',justifyContent: 'center',alignItems: 'center',width:'150%',marginTop:'190%',backgroundColor:'#bfdad5', borderRadius:20}}>
-              <Text style={{fontWeight:'bold',fontFamily: 'Roboto-Light',paddingTop: 20,fontSize: 12, paddingLeft:7}}>{item.title}</Text>
-              <Text style={{fontFamily: 'Roboto-Light',paddingLeft:15, padding: 10,fontSize: 8}}>{item.text}</Text>
-            </View>
-            
+              height: 400,
+              paddingTop: 160,
+              padding: 30,
+              marginLeft: 45,
+              marginRight: 0,}} source={{ uri: item.imgUrl }}>
+                <View style={{textAlign:'center',justifyContent: 'center',alignItems: 'center',width:'100%',marginTop:'60%',backgroundColor:'#bfdad5', borderRadius:20}}>
+                  <Text style={{fontWeight:'bold',fontFamily: 'Roboto-Light',paddingTop: 20,fontSize: 12, paddingLeft:7}} onPress={() => Linking.openURL('https://www.hsph.harvard.edu/nutritionsource/sustainability/')}>{item.title}</Text>
+                  <Text style={{fontFamily: 'Roboto-Light',paddingLeft:15, padding: 10,fontSize: 8}}>{item.text}</Text>
+                </View>
+              
+            </ImageBackground>
           </View>
         )
     }

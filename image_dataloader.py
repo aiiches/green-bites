@@ -3,6 +3,7 @@ import torch
 import numpy
 import pandas as pd
 import pytorch_lightning as pl
+import random
 
 from pprint import pprint as pp
 from PIL import Image
@@ -29,6 +30,11 @@ class GroceryStoreDataset(torch.utils.data.Dataset):
 
             self.images_list.append(image_path)
             self.labels_list.append(label)
+
+        #temp = list(zip(self.images_list, self.labels_list))
+        #random.shuffle(temp)
+        #self.images_list, self.labels_list = zip(*temp)
+
 
         self.transforms = transforms.Compose([
                 #transforms.RandomHorizontalFlip(),
@@ -93,16 +99,20 @@ class GroceryStoreDataloader(pl.LightningDataModule):
         return torch.utils.data.DataLoader(
             self.train_dataset,
             batch_size=self.batch_size,
-            drop_last=True,
-            num_workers=self.num_workers)
+            shuffle=True,
+            num_workers=self.num_workers,
+            drop_last=True
+            )
 
 
     def val_dataloader(self):
         return torch.utils.data.DataLoader(
-            self.val_dataset,
+            self.train_dataset,
             batch_size=self.batch_size,
-            drop_last=True,
-            num_workers=self.num_workers)
+            shuffle=True,
+            num_workers=self.num_workers,
+            drop_last=True
+            )
 
     def test_dataloader(self):
         return torch.utils.data.DataLoader(
@@ -140,4 +150,3 @@ if __name__ == '__main__':
 
     pp(images.shape)
     pp(labels.shape)
-    

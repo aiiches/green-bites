@@ -17,23 +17,27 @@ export default class App extends React.Component {
           {
               title:"Ayesha Liaqat",
               text: "@aliaqat",
-              imgUrl: "https://picsum.photos/id/10/200/300"
+              imgUrl: "https://picsum.photos/id/11/200/300"
             },
           {
               title:"Lama Khalil",
               text: "@lkhalil",
+              imgUrl: "https://picsum.photos/id/10/200/300"
           },
           {
               title:"Kate Szabo",
               text: "@kszabo",
+              imgUrl: "https://picsum.photos/id/44/200/300"
           },
           {
               title:"Meriem Khalfoun",
               text: "@mkhalfoun",
+              imgUrl: "https://picsum.photos/id/22/200/300"
           },
           {
               title:"Victoria Wang",
               text: "@vwang",
+              imgUrl: "https://picsum.photos/id/38/200/300"
           },
         ]
       }

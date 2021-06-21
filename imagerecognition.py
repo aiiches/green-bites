@@ -105,7 +105,9 @@ if __name__ == '__main__':
     val_dataloader = dataloader.val_dataloader()
 
     # defining the number of epochs
+
     n_epochs = 20
+
     # empty list to store training losses
     train_losses = []
     # empty list to store validation losses
@@ -130,6 +132,7 @@ if __name__ == '__main__':
     print("Done!")
 
     PATH = "seventh_model.pt"
+
     torch.save(model, PATH)
 
     plt.figure(figsize=(10, 5))
